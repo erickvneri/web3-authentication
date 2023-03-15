@@ -12,7 +12,7 @@ connecting with the MetaMask wallet extension.
 
 - [Python 3.7](https://www.python.org/downloads/) or higher.
 - [NodeJS](https://nodejs.org/en/download/).
-- [MetaMask(https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn)] web extension.
+- [MetaMask](https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn) web extension.
 - [Moralis](https://moralis.io/) account _(no credit card required, just skip the step)_.
 
 ### Set up
