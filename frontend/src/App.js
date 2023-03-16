@@ -26,6 +26,7 @@ const styles = {
   alignItems: "center",
   width: "100%",
   height: "100%",
+  backgroundColor: "#38598b77",
 };
 
 export default App;

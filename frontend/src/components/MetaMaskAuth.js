@@ -1,14 +1,19 @@
 import { useState } from "react";
 import { MetaMaskConnector } from "wagmi/connectors/metaMask";
-import { useConnect, useSignMessage } from "wagmi";
+import { useConnect, useSignMessage, useDisconnect } from "wagmi";
 import { requestChallenge, verifyChallenge } from "../services/evmService";
 
 function MetaMaskAuth({}) {
   const { signMessageAsync } = useSignMessage();
   const { connectAsync } = useConnect();
+  const { disconnect } = useDisconnect({
+    onSuccess: () => console.log("Disconnected!!"),
+    onError: (err) => console.wan("Failed to disconnect MetaMask", err),
+  });
   const [profileId, setProfileId] = useState(null);
 
   function authorize() {
+    disconnect();
     /*
      * Initialize Web3 Authentication flow
      * against MetaMask Wallet.
@@ -36,23 +41,37 @@ function MetaMaskAuth({}) {
        * for later use...
        * */
       .then((res) => {
+        const id = res.data.profile_id;
+
         localStorage.setItem("accessToken", res.data.access_token);
         localStorage.setItem("profileId", res.data.profile_id);
-        setProfileId(res.data.profile_id);
+        setProfileId(() => {
+          const prefix = id.slice(0, 5);
+          const sufix = id.slice(id.length - 5, id.length);
+          return `${prefix}...${sufix}`;
+        });
       });
+  }
+
+  function deauth() {
+    disconnect();
+    setProfileId(null);
+    localStorage.clear();
   }
 
   return (
     <div style={styles.container}>
-      {profileId ? (
-        <h3>Profile: {profileId}</h3>
-      ) : (
-        <h3>MetaMask Authentication</h3>
-      )}
+      {profileId ? <h3>Welcome, {profileId}!</h3> : <h3>Fancy a drink?</h3>}
 
-      <button style={styles.button} onClick={authorize}>
-        Autorize
-      </button>
+      {profileId ? (
+        <button style={styles.button} onClick={deauth}>
+          Logout
+        </button>
+      ) : (
+        <button style={styles.button} onClick={authorize}>
+          Autorize
+        </button>
+      )}
     </div>
   );
 }
@@ -67,6 +86,7 @@ const styles = {
     justifyContent: "center",
     alignItems: "center",
     textAlign: "center",
+    color: "#142d4c",
   },
   button: {
     width: "50%",
