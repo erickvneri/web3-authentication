@@ -2,7 +2,7 @@ import { WagmiConfig, createClient } from "wagmi";
 import { getDefaultProvider } from "ethers";
 
 // Feature components
-import MetamaskAuth from "./components/Metamaskauth";
+import MetaMaskAuth from "./components/MetaMaskAuth";
 
 const client = createClient({
   autoConnect: true,
@@ -13,7 +13,7 @@ const App = () => {
   return (
     <div style={styles}>
       <WagmiConfig client={client}>
-        <MetamaskAuth />
+        <MetaMaskAuth />
       </WagmiConfig>
     </div>
   );
